@@ -1,8 +1,11 @@
-# Panic At The Dojo System
+# Panic At The Dojo System, PATCH'd UP! Edition
+
+This is an attempt to fix up justgage's Panic At The Dojo system for Foundry to include all of the content from the 2e - PATCH'd UP update to the ruleset. Very WIP, much like the original!
+
 
 Put this in Foundry to install: 
 ```
-https://raw.githubusercontent.com/justgage/foundry-panic-at-the-dojo/refs/heads/main/system.json
+https://raw.githubusercontent.com/FakeSalamander/foundry-panic-at-the-dojo/refs/heads/main/system.json
 ```
 
 It's not currently on the store since it's pretty rough still.
