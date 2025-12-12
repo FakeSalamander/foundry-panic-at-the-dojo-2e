@@ -13,9 +13,10 @@ const Token = {
   Burning: "Burning",
   Chaos: "Chaos",
   Challenge: "Challenge",
-  Inspired: "Inspired",
+  Mentor: "Mentor",
   Training: "Training",
   Weakness: "Weakness",
+  Poltergeist: "Poltergeist",
   Any: "Any",
 };
 
@@ -45,9 +46,9 @@ export const forms = [
         name: "Amplify",
         levels: [
           {
-            diceCost: [3],
+            otherCost: ["2 HP"],
             description:
-              "Your next Action this turn has its range increased by 2 and may apply to up to three extra targets within range",
+              "Your next Action this turn has its range increased by 3 and may apply to one additional target",
           },
         ],
       },
@@ -56,11 +57,11 @@ export const forms = [
         levels: [
           {
             diceCost: [3],
-            description: "Deal 1 damage to every enemy within range.",
+            description: "Deal 1 damage to every enemy within range. Unblockable by Armor and Shields",
           },
           {
             diceCost: [6],
-            description: "Deal 2 damage to one enemy within range",
+            description: "Deal 2 damage to one enemy within range. Unblockable by Armor and Shields",
           },
         ],
       },
@@ -69,29 +70,27 @@ export const forms = [
   {
     key: "c",
     ability: {
-      description: `When an enemy within range takes an action you can spend one Control token to negate it or two control tokens to redirect it.
-        You may only use Control tokens once per turn. If you negate an action they lose the number they spent and the action does not happen.
-        If you redirect an action you choose all targets and make all decisions for that action.`,
+      description: `After you spend Control Tokens, you may Push 1 or Pull 1 to the enemy whose Action you Controlled. When you add Control Form to a Style, CHOOSE ONE:\n-Increase that Style's maximum range by 3.\n-Set that Style's minimum range to 0.`,
     },
     actionDice: [Dice.d10, Dice.d8, Dice.d6, Dice.d4],
     forbiddenActionDice: [Dice.d8, Dice.d6],
     name: "Control",
-    rangeModifiers: [{ relMaxRange: 3 }, { absMinRange: 1 }],
+    rangeModifiers: [{ relMaxRange: 3 }, { absMinRange: 0 }],
     actions: [
       {
         name: "Suppression",
         levels: [
           {
             diceCost: [3],
-            description: "You gain 1 Control token and move 1 space.",
+            description: "You gain 1 Control token and may Move 1.",
           },
           {
             diceCost: [6],
-            description: "6+ you gain 1 Control token",
+            description: "6+: You gain 1 Control token and may Move 1.",
           },
           {
             diceCost: [9],
-            description: "9+ You gain one control token and can move one space",
+            description: "9+: You gain 1 Control token and may Move 1.",
           },
         ],
       },
@@ -101,14 +100,14 @@ export const forms = [
     key: "d",
     ability: {
       description:
-        "After you Throw or Grapple someone, you gain X Speed tokens, where X is how many spaces you moved them.\nAfter each space you move using Free Movement, you may choose someone within range and pull them 1 space",
+        "After you take damage, pay HP, or are healed, you gain 1 Speed token.\nWhen you Bleed, gain 3 Speed tokens.\nAfter each Dice Action you perform, if it applied Forced Movement to an enemy, they must discard 1 Basic token, if they have any. If it applied Forced Movement to an ally, they heal 1. If it moved, swapped, or teleported you, you heal 1.",
     },
-    actionDice: [Dice.d10, Dice.d8, Dice.d6],
-    forbiddenActionDice: [Dice.d8, Dice.d6],
+    actionDice: [Dice.d10, Dice.d6, Dice.d6, Dice.d6],
+    forbiddenActionDice: [Dice.d10, Dice.d6],
     name: "Dance",
     actions: [
       {
-        name: "Try to Keep Up",
+        name: "Dance Together",
         levels: [
           {
             tokenCost: [
@@ -117,7 +116,37 @@ export const forms = [
                 tokenType: Token.Speed,
               },
             ],
-            description: "Move two spaces, then heal 2.",
+            description: "Choose someone within range. Pull them 1, then you Move 1, then you Pull them 1 more. Usable once per turn.",
+          },
+        ],
+      },
+      {
+        name: "Tango",
+        levels: [
+          {
+            diceCost: [3],
+            description: "Swap spaces with an adjacent enemy, then Push them 1.",
+          },
+          {
+            diceCost: [6],
+            description: "Pull them 2, then deal 2 damage to them.",
+          },
+          {
+            diceCost: [10],
+            description: "Push them 4, then deal 3 damage to them.",
+          },
+        ],
+      },
+      {
+        name: "Dance Apart",
+        levels: [
+          {
+            diceCost: [4],
+            description: "Push 3 to someone within range, then Move 1.",
+          },
+          {
+            diceCost: [7],
+            description: "Move 2 more, then heal.",
           },
         ],
       },
@@ -127,10 +156,10 @@ export const forms = [
     key: "i",
     ability: {
       description:
-        "You have Armor. When you gain Speed tokens, replace half of them (rounded up) with Iron tokens",
+        "You have Armor.\nWhen your Armor triggers, you gain 1 Iron token.\nWhen you gain Speed tokens, replace half of them (rounded down) with Iron tokens.\nYou may spend 1 Iron token to take 1 less damage from any source (even Reduced Hits).",
     },
-    actionDice: [Dice.d8, Dice.d6, Dice.d6],
-    forbiddenActionDice: [Dice.d6, Dice.d6],
+    actionDice: [Dice.d8, Dice.d6, Dice.d6, Dice.d6],
+    forbiddenActionDice: [Dice.d8, Dice.d6],
     name: "Iron",
     actions: [
       {
@@ -139,7 +168,7 @@ export const forms = [
           {
             diceCost: [3],
             description:
-              "Choose two: you gain 3 Iron tokens; an ally within range gains 2 Iron tokens; or heal someone within range",
+              "Choose two: you gain 3 Iron tokens; -or- an ally within range other than yourself gains 2 Iron tokens; -or- give Shield 2 to an ally within range",
           },
         ],
       },
@@ -149,7 +178,7 @@ export const forms = [
           {
             diceCost: [3],
             description:
-              "Choose two: pull an enemy 2 spaces; Challenge an enemy you can see; or place a trap into a space within range",
+              "Target an enemy within range, then Choose two: Challenge them; -or Give them 2 Fatigue tokens; -or- place a Trap into their space",
           },
         ],
       },
@@ -158,7 +187,7 @@ export const forms = [
         levels: [
           {
             diceCost: [6],
-            description: "Choose 4 from the Secure and/or Contain lists",
+            description: "Choose four from the Secure and Contain lists. Options from the Contain list must target an enemy within range.",
           },
         ],
       },
@@ -168,7 +197,7 @@ export const forms = [
     key: "o",
     ability: {
       description:
-        "After you deal damage to an enemy with an Action, you hit them again for 1 damage",
+        "Before each Action you perform, you may Move 1.\n After your first Action on your turn, Move 1, then deal 2 damage to an enemy within range.\n At the end of each turn where you performed any Actions, you may deal 1 damage to an enemy within range, then Move 2.",
     },
     actionDice: [Dice.d6, Dice.d6, Dice.d4, Dice.d4],
     forbiddenActionDice: [Dice.d6, Dice.d4],
@@ -181,14 +210,18 @@ export const forms = [
             diceCost: [1],
             description: "Teleport 2 spaces",
           },
+          {
+            diceCost: [4],
+            description: "Teleport 2 more, then you may deal 1 damage to an enemy within range."
+          }
         ],
       },
       {
-        name: "Whirlwind",
+        name: "Left, Right!",
         levels: [
           {
             diceCost: [4],
-            description: "Deal 1 damage to up to three enemies within range",
+            description: "Deal 1 damage to an enemy within range, then deal 2 damage to a different enemy within range.",
           },
         ],
       },
@@ -198,7 +231,7 @@ export const forms = [
     key: "p",
     ability: {
       description:
-        "When you gain Speed tokens, replace half of them (rounded up) with Power tokens.\nYou may spend up to 3 Power tokens per hit",
+        "When you gain Speed tokens, replace half of them (rounded down) with Power tokens.\nYou can Enhance a Hit two additional times.",
     },
     actionDice: [Dice.d10, Dice.d10, Dice.d4],
     forbiddenActionDice: [Dice.d10, Dice.d4],
@@ -208,8 +241,8 @@ export const forms = [
         name: "Yell",
         levels: [
           {
-            diceCost: [3],
-            description: "You gain 3 Power tokens",
+            otherCost: ["X"],
+            description: "You gain Power tokens equal to half of X (rounded up), then you gain a Shield with a value equal to half of X (rounded down).",
           },
         ],
       },
@@ -219,11 +252,11 @@ export const forms = [
           {
             diceCost: [6],
             description:
-              "Deal 3 damage to an enemy within range. This damage cannot be reduced by Armor and ignores Shields. Tokens and Abilities cannot be used in response to Crush or the damage it deals.",
+              "Unblockable by Abilities and Tokens. Deal 3 damage to an enemy within range.",
           },
           {
             diceCost: [9],
-            description: "9+: You may spend any number of Power tokens on this hit",
+            description: "9+: Deal 5 damage instead, and Crush is Unblockable.",
           },
         ],
       },
@@ -233,29 +266,49 @@ export const forms = [
     key: "r",
     ability: {
       description:
-        "You have Armor. You do not discard your Speed tokens at the end of a turn.\nYou may only take one Action per turn.\nYour Action Pool does not empty between Turns or Rounds",
+        "You have Armor.\nUnblockable by Control Tokens and Iron Tokens.\nThe first time your Armor triggers each turn, you may Teleport 2. Then, if you Action Pool is empty, add a 3 to your Action Pool.",
     },
-    actionDice: [Dice.d8, Dice.d8, Dice.d6, Dice.d4],
-    forbiddenActionDice: [Dice.d8, Dice.d4],
+    actionDice: [Dice.d10, Dice.d10],
+    forbiddenActionDice: [Dice.d10],
     name: "Reversal",
     actions: [
       {
-        name: "Counter Attack",
+        name: "Palm Strike",
         levels: [
           {
-            diceCost: [1],
+            diceCost: [3],
             description:
-              "Teleport within range of an enemy that dealt damage to you this turn, then spend this number on another Action. That Action must target the enemy you teleported to",
+              "Push 3 and deal 1 damage to an adjacent enemy.",
           },
         ],
       },
+      {
+        name: "Deep Breathing",
+        levels: [
+          {
+            otherCost: ["X"],
+            description:
+              "Move up to 2. This movement ignores obstacles. At the start of the next turn, add X to your Action Pool. Usable once per turn. Unblockable.",
+          },
+        ],
+      },
+      {
+        name: "Rupture",
+        levels: [
+          {
+            otherCost: ["X"],
+            description:
+              "An enemy within range gains X Burning Tokens. This can only target the active character.",
+          }
+        ]
+      }
     ],
   },
   {
     key: "s",
     ability: {
       description:
-        "At the start and end of your turn, you gain 2 Speed tokens\nYou do not discard your Speed tokens at the end of a turn.",
+        "At the start and end of your turn, you gain 2 Speed tokens\nAt the start of each Movement Phase, you may Move 1\nYou do not discard any Speed tokens during the End Phase.",
     },
     actionDice: [Dice.d4, Dice.d4, Dice.d4, Dice.d4, Dice.d4, Dice.d4],
     forbiddenActionDice: [Dice.d4, Dice.d4, Dice.d4],
@@ -272,7 +325,7 @@ export const forms = [
               },
             ],
             description:
-              "Place one Fog, Copy, or Trap obstacle into an adjacent space, then teleport two spaces",
+              "Place one Fog, Copy, or Trap obstacle into an adjacent space, then teleport two spaces.\nDuring enemy turns: usable once per turn.",
           },
         ],
       },
@@ -282,7 +335,7 @@ export const forms = [
     key: "S",
     ability: {
       description:
-        "At the start of each turn choose a song; Iron, Power or Speed. You gain three tokens of the chosen type and each of your allies gain 1 of that type",
+        "At the start of each turn choose a song; Iron, Power or Speed. You gain 3 tokens of the chosen type, and each  ally (other than yourself) gain 1 of the chosen type.",
     },
     actionDice: [Dice.d8, Dice.d6, Dice.d6, Dice.d4],
     forbiddenActionDice: [Dice.d8, Dice.d4],
@@ -292,43 +345,96 @@ export const forms = [
         name: "Sing Along",
         levels: [
           {
-            diceCost: [1],
+            diceCost: [2],
             description:
-              "Choose one ally you can see. Choose one: They remove one token they hold; they heal; or they gain 2 tokens from your song.",
+              "Target an ally you can see. Choose one: They discard one token; -or- they heal 2; -or- they gain 2 tokens from your song. Usable once per turn.",
           },
           {
             diceCost: [4],
-            description: "They also choose one from the list.",
+            description: "4+: They also choose one from the list.",
           },
           {
             diceCost: [6],
             description:
-              "Add a 4 to their Action Pool. They must immediately spend it on an Action.",
+              "6+: Add a 4 to their Action Pool.",
+          },
+        ],
+      },
+      {
+        name: "Diss Track",
+        levels: [
+          {
+            diceCost: [3],
+            description:
+              "Target an enemy you can see. Choose one to give them: 2 Burning tokens; -or- 2 Fatigue tokens; -or- 2 Weakness tokens.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: They also choose one from the list.",
+          },
+          {
+            diceCost: [6],
+            description:
+              "6+: Pull 2 and Challenge them.",
           },
         ],
       },
     ],
   },
   {
+    key:"t",
+    ability: {
+      description:
+        "At the start of your turn, you gain Shield 2.\nAfter your Shield absorbs from an enemy Action, you deal 1 damage to them. If it broke your Shield, deal 2 damage instead."
+    },
+    actionDice: [5, Dice.d6, Dice.d6, Dice.d6],
+    forbiddenActionDice: [5, Dice.d6],
+    name: "Thorns",
+    actions: [
+      {
+        name: "Blossoms",
+        levels: [
+          {
+            diceCost: [3],
+            description: "You gain Shield 2 and choose one: Gain 1 Power token; -or- Move 1; -or- heal 1."
+          },
+          {
+            diceCost: [6],
+            description: "6+: Instead, gain Shield 4 and choose two."
+          }
+        ]
+      },
+      {
+        name: "Brambles",
+        levels: [
+          {
+            otherCost: ["Destroy Your Shield"],
+            description: "This is a Token Action that costs your Shield. Deal 1 damage up to X enemies within Range 1-X, then gain 1 Power token. X is equal to the value of the destroyed shield. Usable twice per turn."
+          }
+        ]
+      }
+    ]
+  },
+  {
     key: "v",
     ability: {
       description:
-        "At the start of your turn, either heal or discard one token you hold. At the end of your turn, choose an enemy in range and give them one Weakness token",
+        "At the start of your turn, discard up to 2 Status tokens you hold; then if you are Bleeding, you heal.\nAt the end of your turn, choose up to two enemies within range and give them each 1 Weakness token",
     },
-    actionDice: [Dice.d6, Dice.d6, Dice.d6, Dice.d6],
-    forbiddenActionDice: [Dice.d6, Dice.d6],
+    actionDice: [5,4,3,2,1],
+    forbiddenActionDice: [5,3],
     name: "Vigilance",
     actions: [
       {
         name: "Bow Down",
         levels: [
           {
-            diceCost: [1],
-            description: "Give one weakness token to an enemy within range.",
+            diceCost: [2],
+            description: "Give 1 Weakness token to an enemy within range.",
           },
           {
             diceCost: [4],
-            description: "give two weakness tokens to an enemy within range",
+            description: "4+: Give 1 Weakness token to each enemy within range",
           },
         ],
       },
@@ -337,11 +443,15 @@ export const forms = [
         levels: [
           {
             diceCost: [1],
-            description: "Heal yourself or an ally you can see.",
+            description: "Give 1 Power token to an ally within range. Usable once per turn",
           },
           {
-            diceCost: [4],
-            description: "heal yourself or a different ally you can see",
+            diceCost: [3],
+            description: "3+: Heal that ally",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Heal and give 1 Power token to a different ally within range.",
           },
         ],
       },
@@ -351,54 +461,59 @@ export const forms = [
     key: "w",
     ability: {
       description:
-        "At the start of your turn, for each of these that is true, add 1d6 to your Action Dice\n-Your current Health Bar is at half HP or less\n-Someone on your team is Taken Out\n-You are holding a non-basic Token",
+        "After each Action you perform, if you are not Bleeding, you pay 1 HP.\nAt the start of your turn, you gain 2 Power tokens. When you Bleed, add a 4 to your Action Pool",
     },
-    actionDice: [Dice.d10, Dice.d6, Dice.d6],
-    forbiddenActionDice: [Dice.d10],
+    actionDice: [Dice.d10, Dice.d10, Dice.d6, Dice.d6],
+    forbiddenActionDice: [Dice.d10, Dice.d6],
     name: "Wild",
     actions: [
       {
-        name: "Fury",
+        name: "Pounce",
         levels: [
           {
-            tokenCost: [
-              {
-                number: 2,
-                tokenType: Token.Basic,
-              },
-            ],
+            otherCost: ["Free"],
             description:
-              "Deal 1 damage to an enemy within range.\nAt the end of this turn, push that enemy 1 space.\nFury can be used only 3 times per turn",
+              "Pull yourself 3 towards an enemy you can see. Usable once per turn",
           },
         ],
       },
-    ],
-  },
-  {
-    key: "z",
-    ability: {
-      description:
-        "Your Action Pool is predetermined: 7, 5, 3, 1. You may hold multiple Shields at a time. Only one Shield is active at a time. When your active Shield breaks, your next Shield doesn't become active until the end of the current turn.\nWhen an enemy damages or breaks your Shield, you deal 1 damage to them",
-    },
-    actionDice: [7, 5, 3, 1],
-    forbiddenActionDice: [5, 3],
-    name: "Zen",
-    actions: [
       {
-        name: "Focus",
+        name: "Howl",
         levels: [
           {
-            diceCost: [3],
-            description: "You gain a 2 point Shield. You may move one space.",
-          },
-          {
-            diceCost: [7],
-            description: "You gain a 4 point Shield. You may move two spaces",
+            diceCost: [4],
+            description:
+              "Gain 1 Power token, then heal 4, then give 1 Weakness token to each enemy you can see. Usable once per turn",
           },
         ],
       },
     ],
   },
+//  {
+//    key: "z",
+//    ability: {
+//      description:
+//        "Your Action Pool is predetermined: 7, 5, 3, 1. You may hold multiple Shields at a time. Only one Shield is active at a time. When your active Shield breaks, your next Shield doesn't become active until the end of the current turn.\nWhen an enemy damages or breaks your Shield, you deal 1 damage to them",
+//    },
+//    actionDice: [7, 5, 3, 1],
+//    forbiddenActionDice: [5, 3],
+//    name: "Zen",
+//    actions: [
+//      {
+//       name: "Focus",
+//        levels: [
+//          {
+//            diceCost: [3],
+//            description: "You gain a 2 point Shield. You may move one space.",
+//          },
+//          {
+//            diceCost: [7],
+//            description: "You gain a 4 point Shield. You may move two spaces",
+//          },
+//        ],
+//      },
+//    ],
+//  },
 ];
 export const defaultArchetype = {
   key: "0",
@@ -419,196 +534,409 @@ export const archetypes = [
     name: "Angel",
     focusedAbility: {
       description:
-        "At the start of your turn, Challenge an enemy you can see, then deal 1 damage to them, then heal 1. After you Challenge an enemy, deal 1 damage to them and heal 1.",
-    },
-    franticAbility: {
-      description:
-        "At the start of this turn, Challenge an enemy you can see, then deal 2 damage to them, then heal.",
+        "Your Challenges are Unblockable By Shields.\nAt the start of your turn, you may heal, then if you did, Challenge an enemy you can see and deal 1 damage to them.\nAfter you Challenge an enemy, deal 1 damage to them and heal 1.",
     },
     fusedAbility: {
       description:
-        "At the start of your turn, Challenge an enemy you can see. After you Challenge an enemy, deal 1 damage to them and heal 1.",
+        "Your Challenges are Unblockable By Shields.\nAt the start of your turn, you may heal 2, then if you did, Challenge an enemy you can see.\nAfter you Challenge an enemy, deal 1 damage to them.",
     },
+    franticAbility: {
+      description:
+        "Your Challenges are Unblockable By Shields.\nAt the start of this turn, you may heal, then if you did, Challenge an enemy you can see and deal 1 damage to them.\nAfter you Challenge an enemy, deal 1 damage to them and heal 1..",
+    },
+    archetypeActions: [
+      {
+        name: "Bow Down",
+        levels: [
+          {
+            diceCost: [2],
+            description: "Challenge one enemy you can see. You may Pull them up to 3.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Challenge every enemy adjacent to the initial target, then Pull 1 to everyone Challenged by Siren Song.",
+          },
+        ],
+      },
+    ],
   },
   {
     key: "c",
     name: "Cavalry",
     focusedAbility: {
       description:
-        "At the start and end of your turn, you and each ally adjacent to you gains a 2 point Shield. When your Shield or an ally's Shield breaks, you gain 1 Speed token",
-    },
-    franticAbility: {
-      description:
-        "At the start and end of this turn, you and each ally adjacent to you gains a 2 point shield",
+        "At the start and end of your turn, you may Move up to 2, then you and each ally within range gains Shield 2.",
     },
     fusedAbility: {
       description:
-        "At the end of your turn, you and each ally adjacent to you gains a 2 point shield",
+        "At the start of your turn, you may Move up to 2, then you and each ally within range gains Shield 2.",
     },
+    franticAbility: {
+      description:
+        "At the start and end of this turn, you may Move up to 2, then you and each ally within range gains Shield 2.",
+    },
+    archetypeActions: [
+      {
+        name: "First Aid",
+        levels: [
+          {
+            diceCost: [1],
+            description: "Target an ally within Range 1-5. Pull yourself towards them, 1 space at a time, until you are adjacent to that ally. First Aid can only target an ally once per turn.",
+          },
+          {
+            diceCost: [4],
+            description: "4+:  Heal that ally.",
+          },
+          {
+            diceCost: [6],
+            description: "6+:  Give that ally Shield 4.",
+          },
+        ],
+      },
+    ],
   },
   {
     key: "y",
     name: "Cyborg",
     focusedAbility: {
-      description: "At the start of your turn, you gain four Basic Tokens of your choice.",
+      description: "At the start of your turn, you gain 3 Basic Tokens of one type, 2 Basic Tokens of a different type, and 1 Basic Token of the final type.",
     },
     franticAbility: {
-      description: "At the start of this turn, you gain four Basic Tokens of your choice.",
+      description: "At the start of this turn, you gain 3 Basic Tokens of one type, 2 Basic Tokens of a different type, and 1 Basic Token of the final type.",
     },
     fusedAbility: {
-      description: "At the start of your turn, you gain two Basic Tokens of your choice.",
+      description: "At the start of your turn, you gain 2 Basic Tokens of one type, and 1 Basic Token of each of the other type.",
     },
+    archetypeActions: [
+      {
+        name: "XYZ-BURST",
+        levels: [
+          {
+            otherCost: ["2 to 5 Basic Tokens"],
+            description: "You may pay for XYZ-BURST using 2, 3, 4, or 5 Basic Tokens. You heal X, then teleport Y, then deal Z damage to an enemy within range. X is equal to the number of Iron Tokens spent to pay for this. Y is equal to twice the number of Speed Tokens spent. Z is equal to the number of Power Tokens spent. Usable once per turn, only during your own turn. ",
+          }
+        ],
+      },
+    ],
   },
   {
     key: "d",
     name: "Demon",
     focusedAbility: {
-      description: "At the end of your turn, you gain 2 Chaos tokens.",
+      description: "At the end of your turn, you gain 2 Chaos tokens. At the start of each enemy turn, you may Pull yourself up to X spaces towards the active character, where X is the number of Chaos Tokens you hold.",
     },
     franticAbility: {
-      description: "At the end of this turn, you gain 2 Chaos tokens.",
+      description: "At the end of this turn, you gain 2 Chaos tokens.  At the start of each enemy turn, you may Pull yourself up to X spaces towards the active character, where X is the number of Chaos Tokens you hold.",
     },
     fusedAbility: {
-      description: "At the end of your turn, you gain 1 Chaos token.",
+      description: "At the end of your turn, you gain 1 Chaos token.  At the start of each enemy turn, you may Pull yourself up to X spaces towards the active character, where X is the number of Chaos Tokens you hold.",
     },
+    archetypeActions: [
+      {
+        name: "Devil Dive",
+        levels: [
+          {
+            diceCost: [4],
+            description: "Teleport 3, then deal 2 damage to an enemy within range.",
+          }
+        ],
+      },
+    ],
   },
   {
     key: "f",
     name: "Flametongue",
     focusedAbility: {
       description:
-        "After you deal damage to an enemy with an Action, give that enemy one Burning token",
+        "Three times per turn, after you deal damage to an enemy, give them 2 Burning tokens",
     },
     franticAbility: {
       description:
-        "During this turn, after you deal damage to an enemy with three or less Burning tokens, give them one Burning token",
+        "Until your next turn, three times per turn, after you deal damage to an enemy, give them 2 Burning tokens",
     },
     fusedAbility: {
       description:
-        "The first time you deal damage to an enemy during your turn, give that enemy two Burning tokens",
+        "Three times per turn, aftert you deal damage to an enemy, give them 1 Burning token",
     },
+    archetypeActions: [
+      {
+        name: "Incinerate",
+        levels: [
+          {
+            diceCost: [2],
+            description: "Deal 1 damage and give 1 Burning token to an enemy within range.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Deal 2 damage and give 2 Burning tokens instead.",
+          },
+          {
+            diceCost: [8],
+            description: "8+: Deal 3 damage and give 3 Burning tokens instead.",
+          },
+        ],
+      },
+    ],
   },
   {
     key: "g",
     name: "Gunkata",
     focusedAbility: {
       description:
-        "At the start of your turn, push every adjacent enemy one space, the move one space. At the end of your turn, deal 1 damage to each enemy within range.",
+        "At the start and end of your turn, you perform one Gunslinger Action of your choice without paying its cost, from among those available to you in your current Stance.",
     },
     franticAbility: {
       description:
-        "At the end of this turn, you may move one space, then deal 1 damage to each enemy within range. Then, you may move one space",
+        "At the start and end of this turn, you perform one Gunslinger Action of your choice without paying its cost, from among those available to you in your current Stance.",
     },
     fusedAbility: {
-      description: "At the end of your turn, deal 1 damage to each enemy within range.",
+      description: "At the start -or- end of your turn, you perform one Gunslinger Action of your choice without paying its cost, from among those available to you in your current Stance.",
     },
+    archetypeActions: [
+      {
+        name: "Grape Shot",
+        levels: [
+          {
+            diceCost: [4],
+            description: "This is a Gunslinger Action. Deal 1 damage to up to four enemies within range. Any target that takes 0 damage from Grape Shot is pushed 1 space.",
+          },
+        ],
+      },
+      {
+        name: "Slug Shot",
+        levels: [
+          {
+            diceCost: [4],
+            description: "This is a Gunslinger Action. Push 4 and deal 2 damage to an enemy within range.",
+          },
+        ],
+      },
+    ],
   },
   {
     key: "h",
     name: "Phantom",
     focusedAbility: {
       description:
-        "You have access to all of your Styles' Unique Actions at all times, no matter what your current Stance is. All of your Unique Actions have their cost reduced by 1 (to a minimum of 1+ or 2 tokens",
+        "At the start of your turn, you gain 4 Poltergeist Tokens.",
     },
     franticAbility: {
       description:
-        "You have access to all of your Unique Actions this turn, no matter what your current Style and Form are. Your Unique Actions have their cost reduced by 1 (to a minimum of 1+ or 2 tokens",
+        "At the start of this turn, you gain 4 Poltergeist Tokens.",
     },
     fusedAbility: {
       description:
-        "Your Unique Actions have their cost reduced by 1 (to a minimum of 1+ or 2 tokens)",
+        "At the start of your turn, you gain 2 Poltergeist Tokens.",
     },
+     archetypeActions: [
+      {
+        name: "Telekinesis",
+        levels: [
+          {
+            tokenCost: [
+              {
+                number: 1,
+                tokenType: Token.Poltergeist,
+              },
+            ],
+            description: "Choose one: Push 3 to an enemy or obstacle within range; -or- Pull 3 to an enemy or obstacle within range. If this movement ends with an enemy and an obstacle sharing a space, you deal 1 damage to that enemy. Usable once per turn.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "p",
     name: "Punk",
     focusedAbility: {
       description:
-        "At the start of your turn, add X to your Action Pool. X is equal to twice the damage on your current health bar. If your health bar is full, X = 1",
+        "At the start of your turn, add X to your Action Pool. X is equal to the damage on your current health bar, to a maximum of 13. If your health bar is full, X = 3",
     },
     franticAbility: {
       description:
-        "At the start of this turn, add X to your Action Pool. X is equal to twice the damage on your current health bar. If your health bar is full, X = 1",
+        "At the start of this turn, add X to your Action Pool. X is equal to the damage on your current health bar, to a maximum of 13. If your health bar is full, X = 3",
     },
     fusedAbility: {
       description:
-        "At the start of your turn, add X to your Action Pool. X is equal to the damage on your current health bar. If your health bar is full, X = 1",
+        "At the start of your turn, add X to your Action Pool. X is equal to half the damage on your current health bar, to a maximum of 9. If your health bar is full, X = 2",
     },
+    archetypeActions: [
+      {
+        name: "Telekinesis",
+        levels: [
+          {
+            diceCost: [7],
+            description: "Push 4 and deal 4 damage to an enemy within range.",
+          },
+          {
+            diceCost: [13],
+            description: "13+: Push 7 and deal 7 damage instead.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "t",
     name: "Teacher",
     focusedAbility: {
-      description: "At the end of your turn, you gain two Inspired tokens.",
+      description: "At the start of your turn, you gain 2 Mentor tokens.",
     },
     franticAbility: {
-      description: "At the end of this turn, you gain two Inspired tokens.",
+      description: "At the start of this turn, you gain 2 Mentor tokens.",
     },
     fusedAbility: {
-      description: "At the end of your turn, you gain an Inspired token.",
+      description: "At the start of your turn, you gain 1 Mentor token.",
     },
+    archetypeActions: [
+      {
+        name: "Remember Your Training",
+        levels: [
+          {
+            tokenCost: [
+              {
+                number: 1,
+                tokenType: Token.Mentor,
+              },
+            ],
+            description: "The  active character heals 1, then performs a Unique Action available to their current Stance, without paying its cost. For the purposes of Gates or the value of X, use a value of 4. Usable once per turn, only during allies' turns. Usable while you are Taken Out.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "r",
     name: "Trickster",
     focusedAbility: {
       description:
-        "You may spend any tokens you hold as if they were Iron tokens. When you spend Iron tokens to reduce the damage you take, push your attacker 1 space, then you may move 1 space",
+        "At the start of each turn, you may target 1 non-Unique token held by someone within range of you or your Copies, then choose one or both: Steal the chosen token: -and/or- Convert the chosen token into an Iron token.",
     },
     franticAbility: {
       description:
-        "Until your next turn, you may spend any tokens you hold as if they were Iron tokens. When you spend Iron tokens to reduce the damage you take, push your attacker 1 space, then you may move 1 space",
+        "Until your next turn, at the start of each turn, you may target 1 non-Unique token held by someone within range of you or your Copies, then choose one or both: Steal the chosen token: -and/or- Convert the chosen token into an Iron token.",
     },
     fusedAbility: {
       description:
-        "You may spend any basic tokens you hold as if they were Iron tokens. When you spend Iron tokens to reduce the damage you take, you may move 1 space",
+        "At the start of each allied turn, you may target 1 non-Unique token held by someone within range of you or your Copies, then choose one or both: Steal the chosen token: -and/or- Convert the chosen token into an Iron token.",
     },
+    archetypeActions: [
+      {
+        name: "Bag of Tricks",
+        levels: [
+          {
+            otherCost: ["???"],
+            description: "Bag of Tricks can be used as either a Dice Action or a Token Action. To pay for Bagt of Tricks, CHOOSE ONE OR MORE: Spend a 2+ die and 1 HP; -or- Spend a 3+ die; -or- spend 2 Iron tokens; -or- spend 3 Speed tokens; -or- pay 3 HP.\n X is equal to the number of cost choices paid. Choose X:\n Create a Copy within range and swap spaces with it; -or- Create a Pit Trap in an empty space within range; -or- Move  up to 2, then swap spaces with an obstacle within range; -or- Pull 3 to an enemy you can see and they discard 1 token; -or- Give 2 Weakness tokens to an enemy within range. \nUsable once per turn.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "u",
     name: "Underdog",
     focusedAbility: {
       description:
-        "At the start of your turn, you gain one Basic token of your choice.\nAfter you take damage, you gain one Basic token of your choice",
+        "At the start of your turn, you gain 2 Luck Tokens.\nThe first two times you take damage each turn, you gain one Basic token of your choice",
     },
     franticAbility: {
       description:
-        "At the start of this turn, you gain one Basic token of your choice.\nUntil your next turn, after you take damage, you gain one Basic token of your choice",
+        "At the start of this turn, you gain 2 Luck Tokens.\nUntil your next turn, the first two times you take damage each turn, you gain one Basic token of your choice",
     },
     fusedAbility: {
       description:
-        "At the start of your turn, you gain one Basic token of your choice. After you take damage, you gain one Basic token of your choice. You cannot choose a Basic token you are already holding.",
+        "At the start of your turn, you gain 1 Luck Token.\nThe first time you take damage each turn, you gain one Basic token of your choice",
     },
+    archetypeActions: [
+      {
+        name: "Just What I Needed",
+        levels: [
+          {
+            tokenCost: [
+              {
+                number: 3,
+                tokenType: Token.Basic,
+              },
+            ],
+            description: "Choose one: Teleport 3; -or- Push 2 and deal 2 damage to an enemy within range; -or- you gain temporary Armor. Usable once per turn.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "w",
     name: "Wardancer",
     focusedAbility: {
       description:
-        "After rolling your Action Dice, either increase all of your numbers by 1, or increase one of your number by 4",
+        "At the start of the Action Phase of your turn, increase one of your numbers by 3, a different one by 2, and one of your remaining numbers by 1. This can only increase a number up to a maximum value of 9.",
     },
     franticAbility: {
       description:
-        "After rolling your Action Dice this turn, either increase all of your numbers by 1, or increase one of your number by 4",
+         "At the start of the Action Phase of this turn, increase one of your numbers by 3, a different one by 2, and one of your remaining numbers by 1. This can only increase a number up to a maximum value of 9.",
+
     },
     fusedAbility: {
-      description: "After rolling your Action Dice, increase two of your numbers by 2",
+      description: "At the start of the Action Phase of your turn, increase one of your numbers by 2, and one of your other numbers by 1. This can only increase a number up to a maximum value of 5.",
+
     },
+    archetypeActions: [
+      {
+        name: "War Dance",
+        levels: [
+          {
+            diceCost: [2],
+            description: "Move 1, then deal 1 damage to an enemy within range.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Move 2 and deal 2 damage instead.",
+          },
+          {
+            diceCost: [9],
+            description: "9+: Move 3 and deal 3 damage instead.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "i",
     name: "Winterblossom",
     focusedAbility: {
-      description: "At the start of every turn, give 1 Weakness token to one enemy within range",
+      description: "At the start of each turn, give 1 Weakness token to one enemy within range of you or your Copies.",
     },
     franticAbility: {
       description:
-        "At the start and end of this turn, give 1 Weakness token to one enemy within range",
+        "At the start of each turn until your next turn, give 1 Weakness token to one enemy within range of you or your Copies.",
     },
     fusedAbility: {
       description:
-        "At the start and end of your turn, give 1 Weakness token to one enemy within range",
+        "At the start of each allied turn, give 1 Weakness token to one enemy within range of you or your Copies.",
     },
+    archetypeActions: [
+      {
+        name: "Frostbite",
+        levels: [
+          {
+            diceCost: [1],
+            description: "Give 1 Weakness token to an enemy within range.",
+          },
+          {
+            diceCost: [3],
+            description: "3+: Give 1 Weakness token to a different enemy within range.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Give 1 Weakness token to up to two enemies within range.",
+          },
+          {
+            diceCost: [8],
+            description: "8+: Give 1 Weakness token to up to three enemies within range.",
+          },
+        ],
+      },
+     ],
   },
 ];
 export const bossArchetypes = [
@@ -624,50 +952,123 @@ export const bossArchetypes = [
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "Unseen Step",
+        levels: [
+          {
+            otherCost: ["X"],
+            description: "Teleport X.",
+          },
+        ],
+      },
+     ],
   },
   {
-    key: "2",
+    key: "3",
     name: "The Immortal",
     focusedAbility: {
       description: "",
     },
     fusedAbility: {
-      description: "The first time you deal damage with an ACtion each turn, you heal.",
+      description: "The first time you deal damage each turn, you heal.",
     },
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "Unseen Step",
+        levels: [
+          {
+            otherCost: ["X"],
+            description: "Teleport X.",
+          },
+        ],
+      },
+     ],
   },
   {
-    key: "3",
+    key: "2",
     name: "The Giant",
     focusedAbility: {
       description: "",
     },
     fusedAbility: {
       description:
-        "You take up a 2x2 space on the battle grid. Your maximum range increasese by 1 in all Stances. Edges do not remove you from play unless your entire 2x2 spaces is over Edge spaces. You can move over Walls. When you do, they become Rubble, and you must discard one Speed token.",
+        "You take up a 2x2 space on the battle grid.\nYour maximum range is increasesed by 1.\nYou do not take Fall Damage.\nYou can move over Walls. When you do, they become Rubble, and you must discard one Speed token.\nYou can Enhance a Hit one additional time.\n At the startt of each of your turns, you gain 2 Power tokens.",
     },
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "Crush",
+        levels: [
+          {
+            diceCost: [6],
+            description: "Unblockable by Abilities and Tokens. Deal 3 damage to an enemy within range.",
+          },
+          {
+            diceCost: [9],
+            description: "9+: Deal 5 damage instead, and Crush is Unblockable.",
+          },
+        ],
+      },
+     ],
   },
   {
     key: "4",
+    name: "The Machine",
+    focusedAbility: {
+      description: "",
+    },
+    fusedAbility: {
+      description:
+        "Your Stances are made up of one Style attached to two Forms.\n You never roll Green Action Dice.\n You cannot use Freestyles.",
+    },
+    franticAbility: {
+      description: "",
+    },
+    archetypeActions: [
+      {
+        name: "Synchro Breaker",
+        levels: [
+          {
+            diceCost: [4],
+            description: "Target an adjacent enemy and Disable all of their Abilities until the end of this turn.",
+          },
+        ],
+      },
+     ],
+  },
+  {
+    key: "5",
     name: "The Necromancer",
     focusedAbility: {
       description: "",
     },
     fusedAbility: {
       description:
-        "At the start of your turn, place a Copy into an empty space you can see. At the end of your turn, each of your Copies may move one space, then each copy deals 1 damage to one adjacent enemy.",
+        "At the start of your turn, place a Copy into an empty space within range.\nAt the end of your turn, each of your Copies may Move 1, then each Copy deals 1 damage to one adjacent enemy.",
     },
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "Arise, My Minion!",
+        levels: [
+          {
+            otherCost: ["2 HP"],
+            description: "Create a Copy in an empty space within range. Both you and that Copy may Move 1. Usable once per turn.",
+          },
+        ],
+      },
+     ],
   },
   {
-    key: "5",
+    key: "6",
     name: "The Swarm",
     focusedAbility: {
       description: "",
@@ -679,47 +1080,82 @@ export const bossArchetypes = [
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "En Masse",
+        levels: [
+          {
+            diceCost: [1],
+            description: "Create a Copy in an adjacent empty space.",
+          },
+          {
+            diceCost: [3],
+            description: "3+: Create a Copy in an adjacent empty space.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Swap spaces with a Copy within range, then Create a Copy in an adjacent empty space.",
+          },
+          {
+            diceCost: [8],
+            description: "8+: Swap spaces with a Copy within range, then Create a Copy in an adjacent empty space.",
+          },
+        ],
+      },
+     ],
   },
   {
-    key: "6",
+    key: "7",
     name: "The Tank",
     focusedAbility: {
       description: "",
     },
     fusedAbility: {
-      description: "You have Armor. When you are Pushed or Pulled, you move one less space.",
+      description: "You have Armor. Your Armor blocks 10 damage the first time it triggers each turn.\nWhen you are Pushed or Pulled, you move one less space.",
     },
     franticAbility: {
       description: "",
     },
+    archetypeActions: [
+      {
+        name: "Unseen Step",
+        levels: [
+          {
+            otherCost: ["X"],
+            description: "Teleport X.",
+          },
+        ],
+      },
+     ],
   },
   {
-    key: "7",
+    key: "8",
     name: "The Untouchable",
     focusedAbility: {
       description: "",
     },
     fusedAbility: {
       description:
-        "At the start of your turn, you gain one Control token. You can spend one Control token to Counter an enemy's Action. When you Counter an Action, that Action targets its user in addition to its other targets.",
+        "At the start of your turn and when you Bleed, you gain one Control token. It only costs you 1 Control Token to Dodge an Action",
     },
     franticAbility: {
       description: "",
     },
-  },
-  {
-    key: "8",
-    name: "The Vehicle",
-    focusedAbility: {
-      description: "",
-    },
-    fusedAbility: {
-      description:
-        "You take up as much or as little space on the battle grid as you want. Once your shape has been drawn in, it cannot be changed. Enemies and allies can move on top of you. When you move, everyone on top of you moves with you. Spaces inside of you are always within your Range. Edges do not remove you from play unless your entire space is over Edge spaces. You can move over Walls. When you do, they become Rubble, and you must discard a number from your Action Pool.",
-    },
-    franticAbility: {
-      description: "",
-    },
+    archetypeActions: [
+      {
+        name: "Controlling",
+        levels: [
+          {
+            diceCost: [2],
+            description: "You gain 1 Control Token.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: You gain 1 more Control Token.",
+          },
+        ],
+      },
+     ],
   },
 ];
 export const defaultStyle = {
