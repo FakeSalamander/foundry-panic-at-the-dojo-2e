@@ -1178,7 +1178,7 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "At the start of your turn, remove one token you hold.\nAfter you remove tokens using an Action or Ability, you gain an equal number of Iron tokens.",
+        "At the start of your turn, you may discard one token you hold.\nAfter you remove tokens using an Action or Ability, you gain an equal number of Iron tokens.",
     },
     actions: [
       {
@@ -1186,15 +1186,15 @@ export const styles = [
         levels: [
           {
             diceCost: [1],
-            description: "Remove one token from yourself or an ally within range.",
+            description: "Discard one token from yourself or an ally within range.",
           },
           {
             diceCost: [3],
-            description: "Remove up to two tokens from someone within range.",
+            description: "3+: Discard up to two tokens from someone within range.",
           },
           {
             diceCost: [6],
-            description: "Remove up to two tokens from someone within range.",
+            description: "6+: Discard up to two tokens from someone within range.",
           },
         ],
       },
@@ -1208,15 +1208,15 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "When an enemy with your Challenge starts their turn, they do not roll their lowest Action Die. It is discarded and unused.",
+        "When an enemy with your Challenge token starts their turn, they do not roll their lowest Action Die. It is discarded and unused. If they are in a Stance that does not roll Action Dice, they get ride of their bonus die if they have one, or their smallest number if they do not.\n If an enemy discards your Challenge token using an enemy Action or Ability, all numbers currently in their Action Pool are reduced by 2 (to a minimum of 1).",
     },
     actions: [
       {
         name: "Denial",
         levels: [
           {
-            diceCost: [5],
-            description: "Teleport adjacent to an enemy you can see, and Challenge them.",
+            diceCost: [4],
+            description: "Teleport into an empty space adjacent to an enemy you can see, then Challenge them.",
           },
         ],
       },
@@ -1230,7 +1230,7 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "At the start of your turn, all obstacles and enemies adjacent to you are pushed one space.\nEnemies cannot move into the spaces adjacent to you.",
+        "At the start of your turn, Push 1 to all obstacles and enemies adjacent to you.\nEnemies cannot use Action Movement, Free Movement, or teleports to enter a space adjacent to you. \n If an enemy discards your Challenge token using an enemy Action or Ability, the enemy who held the token takes 3 damage.",
     },
     actions: [
       {
@@ -1238,11 +1238,24 @@ export const styles = [
         levels: [
           {
             diceCost: [1],
-            description: "Pull one ally up to three spaces. You and that ally heal 1.",
+            description: "Pull up to 4 one ally that you can see, other than yourself.",
           },
           {
             diceCost: [4],
-            description: "That ally heals.",
+            description: "4+, Once per turn: You and that ally heal.",
+          },
+        ],
+      },
+      {
+        name: "Blinding Light",
+        levels: [
+          {
+            diceCost: [2],
+            description: "Challenge an adjacent enemy, then Push 1 and give them 1 Burning Token.",
+          },
+          {
+            diceCost: [5],
+            description: "5+: Push 3 and give them 3 Burning Tokens instead.",
           },
         ],
       },
@@ -1256,16 +1269,36 @@ export const styles = [
     maxRange: 4,
     ability: {
       description:
-        "At the start and end of your turn, you gain a 2 point Shield.\nAfter each Action you perform, if you have an active Shield, increase its value by 1.",
+        "At the start and end of your turn, choose a Mood: Despair, Sorrow, or Rage.\n If you picked Despair, give 1 Fatigue token to all enemies.\n If you picked Sorrow, give 1 Weakness token to all enemies.\n If you picked Rage, give 1 Burning token to all enemies.",
     },
     actions: [
       {
-        name: "Symphony",
+        name: "Rip Chord",
         levels: [
           {
-            otherCost: ["Destroy Your Active Shield"],
+            diceCost: [2],
             description:
-              "Symphony is a Token Action, but the cost is your Active Shield.\nChoose two: Pull an ally 3 spaces; an ally within range heals; Challenge an enemy within range; an enemy within range is pushed 3 spaces; or destroy an obstacle within range.",
+              "Give one of your Mood's tokens to an enemy within Range.",
+          },
+          {
+            diceCost: [5],
+            description:
+              "5+: Give one of your Mood's tokens to each enemy within Range.",
+          },
+          {
+            diceCost: [8],
+            description:
+              "5+: Give one of your Mood's tokens to each enemy you can see.",
+          },
+        ],
+      },
+      {
+        name: "Mood Shift",
+        levels: [
+          {
+            diceCost: [6],
+            description:
+              "Apply all of your Start Effects as this Action's effects. Usable once per turn, only during your own turn.",
           },
         ],
       },
@@ -1279,7 +1312,7 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "Edges cannot remove you from play.\nAt the end of every turn, you may move two spaces.",
+        "You do not take Fall Damage.\nRubble does not give you Fatigue tokens.\nAt the end of every turn, you may move 1 space.\nAfter you give an enemy your Challenge token, you may Move 2.",
     },
     actions: [
       {
@@ -1287,7 +1320,11 @@ export const styles = [
         levels: [
           {
             diceCost: [1],
-            description: "Teleport three or four spaces.",
+            description: "Teleport 4.",
+          },
+          {
+            diceCost: [4],
+            description: "4+: Challenge an enemy within range, then Teleport 2.",
           },
         ],
       },
