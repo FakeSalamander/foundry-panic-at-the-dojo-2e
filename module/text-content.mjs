@@ -1338,7 +1338,7 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "At the start of your turn, you may move 2 spaces.\nAt the start of each ally's turn, they may move 2 spaces.",
+        "At the start of your turn, you gain temporary Armor and may move 2 spaces.\nAt the start of each ally's turn, they may move 2 spaces.",
     },
     actions: [
       {
@@ -1347,7 +1347,12 @@ export const styles = [
           {
             diceCost: [3],
             description:
-              "You may move one space, then deal 1 damage to an enemy within range. An ally you can see may move one space, then deal 1 damage to an enemy within their range.",
+              "You may move one space, then deal 1 damage to an enemy within range. An ally you can see (other than yourself) may move one space, then deal 1 damage to an enemy within their range.",
+          },
+          {
+            diceCost: [6],
+            description:
+              "5+: You may move 1, then deal 1 damage to an enemy within range. An ally you can see (other than yourself) may move one space, then deal 1 damage to an enemy within their range.",
           },
         ],
       },
@@ -1361,15 +1366,24 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "Whenever an ally within range takes damage, they take half that damage (rounded down) and you take the other half (rounded up).",
+        "At the start of your turn, you heal 1.\nWhenever an ally within range takes damage, they take half that damage (rounded down) and you take the other half (rounded up).",
     },
     actions: [
       {
         name: "Burning Heart",
         levels: [
           {
-            diceCost: [4],
-            description: "You and each ally within range gains 2 Iron tokens.",
+            otherCost: ["3 HP"],
+            description: "Each ally within range gains 2 Iron tokens and 2 Power tokens. Usable once per turn, only while you hold no Power tokens",
+          },
+        ],
+      },
+      {
+        name: "Hero's Moment",
+        levels: [
+          {
+            diceCost: [7],
+            description: "Deal 4 damage to an adjacent enemy and push them X. X is equal to 2, or to half the damage on your current health bar (rounded up), whichever is higher.",
           },
         ],
       },
@@ -1382,16 +1396,26 @@ export const styles = [
     minRange: 1,
     maxRange: 1,
     ability: {
-      description: "At the start and end of your turn, you may teleport one, two, or three spaces.",
+      description: "At the start and end of your turn, you may Teleport 3.\n When you Bleed, you may Teleport 3.",
     },
     actions: [
       {
         name: "Leap In",
         levels: [
           {
-            diceCost: [4],
+            diceCost: [3],
             description:
-              "Teleport up to three spaces.\nYou may deal 2 damage to an enemy within range.",
+              "Teleport 3, then deal deal 2 damage to an enemy within range.",
+          },
+        ],
+      },
+      {
+        name: "Leap Out",
+        levels: [
+          {
+            diceCost: [3],
+            description:
+              "Deal 2 damage to an enemy within range, then teleport 3. Then, choose one: Deal 2 damage to a different enemy within range; -or- heal 2; -or- gain 2 Power tokens.",
           },
         ],
       },
@@ -1402,10 +1426,10 @@ export const styles = [
     parentArchetypeName: "Cavalry",
     name: "Rallying",
     minRange: 1,
-    maxRange: 1,
+    maxRange: 3,
     ability: {
       description:
-        "At the end of your turn, you and each ally within range heals.\nAt the start of each ally's turn, if they are within range of you, they may heal.",
+        "At the start of each ally's turn, if they are within Range of you or your Copies, they may heal.\nAt the end of your turn, choose an ally you can see other than yourself. They heal and agin Shield 2.",
     },
     actions: [
       {
@@ -1413,15 +1437,15 @@ export const styles = [
         levels: [
           {
             diceCost: [2],
-            description: "Pull one ally up to 3 spaces.",
+            description: "Pull up to 3 to one ally you can see.",
           },
           {
             diceCost: [3],
-            description: "Pull one ally up to 4 spaces.",
+            description: "3+: Pull up to 3 to one ally you can see.",
           },
           {
             diceCost: [5],
-            description: "Each pulled ally heals.",
+            description: "5+, Once per turn:  Choose one to apply to each ally within range: Heal; -or- gain 2 Power tokens; -or- gain Shield 3.",
           },
         ],
       },
@@ -1435,15 +1459,29 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "After each Action you perform, give one Iron token to an ally other than yourself within range.\nYour allies within range may spend your tokens.",
+        "Your allies within range may spend your tokens.\nAt the start and end of your turn, give 1 Iron token to each ally within range.",
     },
     actions: [
       {
         name: "Eyes Open",
         levels: [
           {
-            diceCost: [4],
-            description: "You gain 6 Iron tokens and 1 Weakness token.",
+            diceCost: [5],
+            description: "You gain 4 Iron tokens and may Move 1.",
+          },
+        ],
+      },
+      {
+        name: "Stay Out Of This",
+        levels: [
+          {
+            tokenCost: [
+              {
+                number: 4,
+                tokenType: Token.Iron
+              }
+            ],
+            description: "Give 3 Weakness tokens and Push 3 to an enemy within range.",
           },
         ],
       },
@@ -1456,9 +1494,22 @@ export const styles = [
     minRange: 1,
     maxRange: 2,
     ability: {
-      description: "After you spend Iron tokens, you heal 1.",
+      description: "After you spend Iron tokens or trigger your Armor, you heal 1. This can heal a maximum of 3 HP per turn.\nIf an enemy discards your Challenge token using an enemy Action or Ability, the enemy who held the token gains 2 Weakness tokens.",
     },
     actions: [
+      {
+        name: "Hard Body",
+        levels: [
+          {
+            diceCost: [2],
+            description: "You gain temporary Armor.",
+          },
+          {
+            diceCost: [6],
+            description: "6+: You gain 4 Iron tokens.",
+          },
+        ],
+      },
       {
         name: "You, Stay",
         levels: [
@@ -1470,7 +1521,17 @@ export const styles = [
               },
             ],
             description:
-              "Challenge an enemy within range.\nThat enemy discards three Speed tokens.",
+              "Challenge an enemy within range.\nGive that enemy 2 Fatigue tokens. Usable once per turn.",
+          },
+          {
+            tokenCost: [
+              {
+                number: 5,
+                tokenType: Token.Iron,
+              },
+            ],
+            description:
+              "5 Iron: Instead give them 4 Fatigue tokens. You gain Shield 3.",
           },
         ],
       },
@@ -1484,9 +1545,24 @@ export const styles = [
     maxRange: 3,
     ability: {
       description:
-        "When you spend Power tokens to boost the damage a hit deals, give one Burning token to the target of that hit.",
+        "After you spend a Power token to Enhance a Hit, give 1 Burning token to the target of that hit.\nAfter you take damage from Burning Tokens, gain 1 Power token.",
     },
     actions: [
+            {
+        name: "Flamethrower",
+        levels: [
+          {
+            diceCost: [1],
+            description:
+              "Gain 2 Power tokens and 1 Burning token. Usable once per turn.",
+          },
+          {
+            diceCost: [5],
+            description:
+              "5+: Gain 2 more Power tokens and 1 more Burning token.",
+          },
+        ],
+      },
       {
         name: "Flamethrower",
         levels: [
@@ -1498,7 +1574,17 @@ export const styles = [
               },
             ],
             description:
-              "Choose an enemy within range. They take 1 damage, gain one Burning token, and are pushed 1 space.",
+              "Deal 1 damage and give 1 Burning token to an enemy within range. Usable once per turn.",
+          },
+          {
+            tokenCost: [
+              {
+                number: 4,
+                tokenType: Token.Power,
+              },
+            ],
+            description:
+              "4 Power: Instead, deal 2 damage and give 2 Burning tokens, and also, Flamethrower now applies to each target adjacent to the initial target(s).",
           },
         ],
       },
@@ -1512,7 +1598,7 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "You may spend your Basic Tokens as if they were any other Basic Tokens. The Basic Tokens are Iron, Power, and Speed tokens.",
+        "At the start of your turn, you gain 1 Iron token.\nYou may spend your Iron Tokens as if they were Power tokens or Speed tokens.",
     },
     actions: [
       {
@@ -1521,11 +1607,15 @@ export const styles = [
           {
             diceCost: [1],
             description:
-              "Choose three: You heal 1; you gain one Iron token; you gain one Power token; you gain one Speed token; or you deal 1 damage to an enemy within range.",
+              "Choose two: You heal 1; -or- you gain 1 Iron token; -or- you gain 1 Power token; -or- you gain 1 Speed token; -or- you deal 1 damage to an enemy within range.",
           },
           {
             diceCost: [4],
-            description: "Choose the last two options.",
+            description: "4+: Choose all five instead",
+          },
+          {
+            diceCost: [8],
+            description: "8+: Replace all 1's in High Efficiency with 2's.",
           },
         ],
       },
@@ -1538,20 +1628,42 @@ export const styles = [
     minRange: 1,
     maxRange: 1,
     ability: {
-      description: "After you push someone, you may teleport to any empty space adjacent to them.",
+      description: "After you Push, you may Teleport to any empty space adjacent to the target of that Push.\nAt the start of your turn, you amy Push 3 to an obstacle, ally, or enemy within range.",
     },
     actions: [
+      {
+        name: "Nitro Boost",
+        levels: [
+          {
+            diceCost: [3],
+            description: "Teleport 2, then agin 2 Speed tokens.",
+          },
+          {
+            diceCost: [6],
+            description: "6+: Teleport 2, then gain 3 Speed tokens.",
+          },
+        ],
+      },
       {
         name: "Rocket Tackle",
         levels: [
           {
             tokenCost: [
               {
-                number: 2,
+                number: 3,
                 tokenType: Token.Speed,
               },
             ],
-            description: "Push an adjacent enemy or ally two spaces.",
+            description: "Push 2 to someone within range. Usable once per turn.",
+          },
+          {
+            tokenCost: [
+              {
+                number: 5,
+                tokenType: Token.Speed,
+              },
+            ],
+            description: "5 Speed: If they are an ally, they Move up to 3. If they are an enemy, Push 2 and deal 2 damage to them.",
           },
         ],
       },
@@ -1565,7 +1677,7 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "At the end of your turn, choose a token you hold. Either replace it with a Power token, or gain another copy of it.",
+        "At the start of your turn, you may choose 1 token you hold. Either replace it with a Power token, or gain another copy of it.",
     },
     actions: [
       {
@@ -1579,7 +1691,7 @@ export const styles = [
           {
             diceCost: [6],
             description:
-              "The Choice Effect applies to every token they hold of the targeted token's type.",
+              "6+: Power Converter instead applies to every token they hold of the targeted token's type.",
           },
         ],
       },
@@ -1602,7 +1714,7 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Place two Fog obstacles into empty spaces within range.\nYou may teleport to one of those Fog obstacles.",
+              "Place one or two Fog obstacles into empty spaces within range.\nYou may teleport to an empty space within those Fog obstacles.",
           },
         ],
       },
@@ -1612,7 +1724,7 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Each enemy standing in Fog gains one Weakness token.\nYou gain one Speed token for each enemy affected.",
+              "Each enemy standing in Fog gains 1 Weakness token and 1 Fatigue token. Then, you gain 3 Speed tokens.",
           },
         ],
       },
@@ -1626,16 +1738,26 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "Your Throw Actions may target any number of enemies within range. After you Throw an enemy, they take 1 damage.",
+        "Your Throw Actions may target any number of enemies within range. After  you perform an Action that inflicted Forced Movement on any enemies, you deal 1 damage to each enemy moved by that Action.",
     },
     actions: [
+      {
+        name: "Gate Guardian",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "Pull 2 to all enemies you can see, then deal 1 damage to each enemy within range.",
+          },
+        ],
+      },
       {
         name: "Watch Your Step",
         levels: [
           {
-            diceCost: [3],
+            diceCost: [4],
             description:
-              "Choose an enemy you can see that moved during this turn. You deal 2 damage to them.",
+              "Target an enemy you can see that moved during this turn. You Push 1 and deal 2 damage to them.",
           },
         ],
       },
@@ -1646,9 +1768,9 @@ export const styles = [
     parentArchetypeName: "Demon",
     name: "Slasher",
     minRange: 1,
-    maxRange: 1,
+    maxRange: 2,
     ability: {
-      description: "At the end of every turn, you deal 1 damage to an adjacent enemy",
+      description: "After an effect Pushes you, you may Pull yourself up to 2 towards the source of that Push.\nAt the end of every turn, you may Move 1, then you deal 1 damage to an enemy within range.",
     },
     actions: [
       {
@@ -1657,7 +1779,7 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Teleport into an empty space adjacent to someone who is alone.\nSomeone is alone if nobody is adjacent to them.",
+              "Teleport into an empty space adjacent to someone who is alone, then if they are an enemy, you deal 1 damage to them.\nSomeone is alone if nobody is adjacent to them.",
           },
         ],
       },
@@ -1671,7 +1793,7 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "After you deal damage with a hit, you heal 1.\nAfter you give Weakness tokens to an enemy, you gain that many Power tokens.",
+        "After you deal damage with an Action or Ability, you heal 1. This Ability cannot heal you more than the Bleed Value in a single turn.\nAfter you give Weakness tokens to an enemy, you gain 1 Power token, to a maximum of 4 Power tokens per turn.",
     },
     actions: [
       {
@@ -1680,7 +1802,17 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Deal 2 damage to an enemy within range.\nYou may give that enemy one Weakness token.",
+              "Deal 2 damage and give 1 Weakness token to an enemy within range.",
+          },
+        ],
+      },
+      {
+        name: "Hypnotic Gaze",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "Target an enemy you can see. Pull them up to 4, then if they are now within your range, give them 2 Weakness tokens.",
           },
         ],
       },
@@ -1691,9 +1823,9 @@ export const styles = [
     parentArchetypeName: "Demon",
     name: "Zombie",
     minRange: 1,
-    maxRange: 1,
+    maxRange: 2,
     ability: {
-      description: "You have Armor. At the start of your turn, if your HP is 3 or less, you heal.",
+      description: "After an enemy destroys any of your Copies, you deal 1 damage to them.\nAt the start of your turn and when you Bleed, place a Copy into a space within range of you or your Copies.\nAt the end of your turn, you deal 1 damage to each enemy adjacent to any of your Copies.",
     },
     actions: [
       {
@@ -1702,7 +1834,17 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Deal 2 damage to an enemy within range.\nYou may take one token from that enemy.",
+              "One target within range discards 3 tokens of their choice (or all of their tokens, if they have less). For each token they discarded, place a Copy into an empty space adjacent to them.",
+          },
+        ],
+      },
+      {
+        name: "Raise The Dead",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "Give 2 Fatigue tokens to an enemy within range, then place 2 Copies in empty spaces adjacent to that enemy.",
           },
         ],
       },
@@ -1711,21 +1853,31 @@ export const styles = [
   {
     key: "21",
     parentArchetypeName: "Flametongue",
-    name: "Burning",
-    minRange: 2,
-    maxRange: 4,
+    name: "Blazing",
+    minRange: 1,
+    maxRange: 3,
     ability: {
       description:
-        "After you target an enemy with an Action, if they have four Burning tokens or less, give them 1 Burning token.",
+        "At the start of each allied turn, give 1 Burning token to each enemy within range.",
     },
     actions: [
       {
-        name: "Burn It All Down",
+        name: "Blazing Speed",
         levels: [
           {
-            diceCost: [4],
+            otherCost: ["1 HP"],
             description:
-              "Target one enemy within range. Give them one Burning token and put a Trap into their space.",
+              "Target an enemy you can see that has Burning Tokens. Pull yourself up to X spaces towards them, where X is the number of Burning Tokens they hold. Usable once per turn.",
+          },
+        ],
+      },
+      {
+        name: "Ignition",
+        levels: [
+          {
+            diceCost: [6],
+            description:
+              "Deal X damage to an adjacent enemy. X = the number of Burning tokens they hold. Usable once per turn.",
           },
         ],
       },
@@ -1735,20 +1887,50 @@ export const styles = [
     key: "22",
     parentArchetypeName: "Flametongue",
     name: "Explosion",
-    minRange: 2,
-    maxRange: 4,
+    minRange: 1,
+    maxRange: 2,
     ability: {
       description:
-        "After you deal damage to an enemy, push that enemy one space.\nAfter you destroy an obstacle, replace it with an Edge.",
+        "After you perform an Action that destroyed any obstacles, deal 1 damage to all enemies on or adjacent to any of those obstacles.",
     },
     actions: [
+      {
+        name: "Demolition",
+        levels: [
+          {
+            diceCost: [3],
+            description:
+              "Choose one: Place a Pit into a space within range; -or- place 2 Traps into spaces within range; -or- destroy up to 3 obstacles within range.",
+          },
+          {
+            diceCost: [5],
+            description:
+              "4+: Choose two instead.",
+          },
+          {
+            diceCost: [7],
+            description:
+              "6+: Choose three instead.",
+          },
+        ],
+      },
       {
         name: "Ka-Boom!",
         levels: [
           {
+            diceCost: [2],
+            description:
+              "Place Rubble into an adjacent space, then destroy it. Push yourself 2 spaces away from that Rubble.",
+          },
+          {
+            diceCost: [4],
+            description:
+              "4+: Place Rubble into an adjacent space, then destroy it. Push yourself 2 or 3 spaces away from that Rubble.",
+          },
+          {
             diceCost: [6],
             description:
-              "Deal 2 damage to an enemy within range.\nThen, destroy every obstacle adjacent to them.",
+              "6+: Place Rubble into an adjacent space, then destroy it. Push yourself up to 3 spaces away from that Rubble.",
           },
         ],
       },
@@ -1762,21 +1944,26 @@ export const styles = [
     maxRange: 2,
     ability: {
       description:
-        "At the end of your turn, after your Burning tokens have already triggered, you gain three Burning tokens.\nAfter an enemy deals damages to you with an Action, you may give them all of your Burning tokens.",
+        "You have Armor against damage from Burning tokens. After you Reduce a Hit, give 1 Burning token to your attacker.",
     },
     actions: [
       {
-        name: "Ignition",
+        name: "Flame Guard",
         levels: [
           {
-            tokenCost: [
-              {
-                number: 1,
-                tokenType: Token.Burning,
-              },
-            ],
+            otherCost: ["1 HP"],
             description:
-              "Give one Burning token to an enemy within range.\nYou can only use Ignition once per turn.",
+              "You can only use Flame Guard while you hold no Iron tokens. You gain 2 Iron tokens. Usable once per turn.",
+          },
+        ],
+      },
+      {
+        name: "Heat Beam",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "Unblockable. Deal 3 damage to an enemy you can see that is holding at least 2 Burning tokens, then they discard 2 Burning tokens.",
           },
         ],
       },
@@ -1790,7 +1977,7 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "Whenever you would take damage from Burning tokens or from Traps, you heal that much damage instead.",
+        "At the start of your turn, you gain Shield 2, then if you are Bleeding, you heal.\nWhen you Bleed, you heal and gain Shield 3.\nYou do not take damage from Burning Tokens.",
     },
     actions: [
       {
@@ -1799,7 +1986,17 @@ export const styles = [
           {
             diceCost: [4],
             description:
-              "Choose two: Give a Burning token to someone within range; heal an ally within range; or place a Trap within range.",
+              "Choose two: Give 2 Burning tokens to an enemy within range; -or- heal an ally within range; -or- discard up to 3 status tokens from an ally within range. Usable once per turn.",
+          },
+        ],
+      },
+      {
+        name: "Firebird's Flight",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "Teleport 3, then give 2 Burning tokens to all adjacent enemies.",
           },
         ],
       },
@@ -1813,16 +2010,31 @@ export const styles = [
     maxRange: 3,
     ability: {
       description:
-        "After you spend Speed tokens on Free Movement, you may place a Trap into each space you exit.\nYou do not take damage from entering a space with a Trap.",
+        "At the start and end of your turn, you may place a Trap into a space within range.\nAfter an enemy within range takes damage from a Trap, give that enemy 1 Burning token.\nYou do not take damage from Traps.",
     },
     actions: [
+      {
+        name: "Lava Walk",
+        levels: [
+          {
+            tokenCost: [
+              {
+                number: 1,
+                tokenType: Token.Speed
+              }
+            ],
+            description:
+              "Move 1, then place a Trap into the space you left. Usable twice per turn.",
+          },
+        ],
+      },
       {
         name: "Pyroclasm",
         levels: [
           {
-            diceCost: [4],
+            diceCost: [3],
             description:
-              "Place three Traps within range. Each Trap placed by this Action must be adjacent to a Trap obstacle.",
+              "Place three Traps into spaces within range.",
           },
         ],
       },
