@@ -2044,19 +2044,39 @@ export const styles = [
     key: "26",
     parentArchetypeName: "Gunkata",
     name: "Akimbo",
-    minRange: 3,
-    maxRange: 5,
+    minRange: 2,
+    maxRange: 4,
     ability: {
-      description: "After you deal damage to someone, you move one space.",
+      description: "At the start and end of your turn, Move 2.\nAfter each Action you perform, Move 1.",
     },
     actions: [
       {
         name: "Firing Wild",
         levels: [
           {
+            diceCost: [3],
+            description:
+              "Choose one: Deal 1 damage to each adjacent enemy; -or- deal 1 damage to up to 3 enemies within range; -or- deal 1 damage to up to 2 enemies you can see beyond your maximum range.",
+          },
+          {
+            diceCost: [5],
+            description:
+              "5+: Choose two instead.",
+          },
+          {
+            diceCost: [8],
+            description:
+              "8+: Deal 2 damage instead of 1.",
+          },
+        ],
+      },
+      {
+        name: "Kneecapper",
+        levels: [
+          {
             diceCost: [4],
             description:
-              "Choose one: Deal 1 damage to every enemy and ally adjacent to you; or deal 1 damage to every enemy and ally within range.",
+              "This is a Gunslinger Action. Choose one or two enemies within range. Deal 1 damage and give 2 Fatigue tokens to each target.",
           },
         ],
       },
@@ -2065,38 +2085,12 @@ export const styles = [
   {
     key: "27",
     parentArchetypeName: "Gunkata",
-    name: "Artillery",
-    minRange: 3,
-    maxRange: 8,
-    ability: {
-      description: "You can see and target enemies through Fog and Walls.",
-    },
-    actions: [
-      {
-        name: "Bombardment",
-        levels: [
-          {
-            diceCost: [1],
-            description: "Place a Trap into a space within range.",
-          },
-          {
-            diceCost: [6],
-            description:
-              "Place a Trap into each space adjacent to the first Trap.\nDo not place these Traps over Edges or Walls.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: "28",
-    parentArchetypeName: "Gunkata",
     name: "Crosshair",
     minRange: 4,
-    maxRange: 8,
+    maxRange: 5,
     ability: {
       description:
-        "You ignore Armor and Shields when dealing damage.\nWeakness tokens you hold and Iron tokens your enemies hold do not reduce the damage you deal.",
+        "Whenever you deal 3 or more damage to an enemy in a single hit, they gain 1 Weakness token and you gain 1 Power token.",
     },
     actions: [
       {
@@ -2105,7 +2099,47 @@ export const styles = [
           {
             diceCost: [1],
             description:
-              "Your next Action this turn has its cost and every number listed in its description increased by 1.",
+              "This is a Gunslinger Action. Your next damage-dealing Action is Unblockable by Armor, Iron Tokens, and Shields.",
+          },
+        ],
+      },
+      {
+        name: "Headshot",
+        levels: [
+          {
+            diceCost: [6],
+            description:
+              "Deal 5 damage to an enemy within range. Usable once per Round.",
+          },
+        ],
+      },
+    ],
+  },
+{
+    key: "28",
+    parentArchetypeName: "Gunkata",
+    name: "Fullmetal",
+    minRange: 3,
+    maxRange: 6,
+    ability: {
+      description: "At the start of your turn, choose your Ammo: Incendiary, Toxin, or Tracer. You have the chosen Ammo effect until your next turn.\n- Incendiary: After each damage-dealing Action you perform, give each enemy dealt damage by that Action 1 Burning token.\n- Toxin: After each damage-dealing Action you perform, give each enemy dealt damage by that Action 1 Weakness token.\n- Tracer: You can see and target enemies through Fog and Walls. You have +2 maximum Range.",
+    },
+    actions: [
+      {
+        name: "Bombardment",
+        levels: [
+          {
+            diceCost: [5],
+            description: "This is a Gunslinger Action. Place a Trap into any space within range. Then, deal 2 damage to each enemy adjacent to, or on, that Trap.",
+          },
+        ],
+      },
+      {
+        name: "Bazooka",
+        levels: [
+          {
+            diceCost: [7],
+            description: "Deal 4 damage to an enemy within range, then deal 1 damage and give 2 Burning tokens to an enemy adjacent to you.",
           },
         ],
       },
@@ -2114,21 +2148,32 @@ export const styles = [
   {
     key: "29",
     parentArchetypeName: "Gunkata",
-    name: "Ricochet",
+    name: "Quickdraw",
     minRange: 2,
-    maxRange: 4,
+    maxRange: 3,
     ability: {
-      description:
-        "After you deal damage to an enemy with an Action, you may deal 1 damage to a different enemy within 3 spaces of them.",
+      description: "Add a d6 to your Action Dice.\nIf an enemy discards your Challenge token using an enemy Action or Ability, the enemy who held the token gains 2 Fatigue tokens.",
     },
     actions: [
       {
-        name: "Trick Shot",
+        name: "Point Blank Shot",
         levels: [
           {
-            diceCost: [3],
-            description:
-              "Choose one obstacle within range.\nDeal 2 damage to an enemy within 3 spaces of that obstacle.",
+            diceCost: [1],
+            description: "Push 1 and deal 1 damage to an adjacent enemy.",
+          },
+          {
+            diceCost: [4],
+            description: "4+: Instead, Push 3 and deal 3 damage.",
+          },
+        ],
+      },
+      {
+        name: "Showdown",
+        levels: [
+          {
+            diceCost: [4],
+            description: "This is a Gunslinger Action. Challenge an enemy within range. If they take the next turn for their side, they cannot discard your Challenge before the end of that turn. If they do not, you deal 3 damage to them.\nUsable once per turn. Unblockable by Shields.",
           },
         ],
       },
@@ -2137,19 +2182,41 @@ export const styles = [
   {
     key: "30",
     parentArchetypeName: "Gunkata",
-    name: "Ten Thousand",
+    name: "Ricochet",
     minRange: 2,
-    maxRange: 3,
+    maxRange: 5,
     ability: {
-      description: "Add two d4's to your Action Dice.",
+      description:
+        "After each Action you perform, you may choose one: deal 1 damage to one enemy within range that was not targeted by that Action; -or- replace one obstacle you can see with Rubble.",
     },
     actions: [
       {
-        name: "Point Blank Shot",
+        name: "Trick Shot",
         levels: [
           {
-            diceCost: [2],
-            description: "Deal 1 damage to an adjacent enemy.  Then, push them 1 space.",
+            diceCost: [3],
+            description:
+              "Choose one obstacle within range. Destroy it, then deal 2 damage to an enemy within Range 1-3 of that obstacle.",
+          },
+          {
+            diceCost: [6],
+            description:
+              "6: Then, deal 2 damage to another enemy within Range 1-3 of that first enemy.",
+          },
+          {
+            diceCost: [9],
+            description:
+              "6: Then, deal 2 damage to a third enemy within Range 1-3 of that second enemy.",
+          },
+        ],
+      },
+      {
+        name: "Scatter Shot",
+        levels: [
+          {
+            diceCost: [4],
+            description:
+              "This is a Gunslinger Action. Place Rubble into a space within range. Then, each enemy on or adjacent to that Rubble takes 1 damage and is pushed 3 spaces away from that Rubble.",
           },
         ],
       },
@@ -2163,20 +2230,15 @@ export const styles = [
     maxRange: 3,
     ability: {
       description:
-        "At the start of your turn, you gain a 3 point Shield.\nWhen an enemy within range damages or breaks a Shield, you may move that enemy one space.\nAfter a Shield within range breaks, you gain 1 Iron token.",
+        "At the start of your turn, you gain Shield 3.\nAfter an enemy within range damages or breaks an ally's Shield, or has their own Shield damaged or broken, you may Push 1 or Pull 1 to that enemy.\nAfter a Shield within range breaks, you gain 1 Power token.",
     },
     actions: [
       {
-        name: "Shields Up",
+        name: "Aura Surge",
         levels: [
           {
-            tokenCost: [
-              {
-                number: 3,
-                tokenType: Token.Basic,
-              },
-            ],
-            description: "An ally within range gains a 3 point Shield.",
+            otherCosst: ["4+ -or- 1 Poltergeist Token:"],
+            description: "Choose one: an ally within range gains Shield 3; -or- Remove up to 4 points of Shield from 1 enemy within range. If this breaks their Shield, deal 2 damage to them.",
           },
         ],
       },
@@ -2190,7 +2252,7 @@ export const styles = [
     maxRange: 4,
     ability: {
       description:
-        "At the start of your turn, give one Weakness token to all enemies within range.\nAt the end of your turn, Challenge an enemy within range and give them one Weakness token.",
+        "At the start of your turn, give 1 Weakness token to all enemies within range.\nAt the end of your turn, Challenge an enemy within range and give them one Weakness token.\nIf an enemy discards your Challenge token using an enemy Action or Ability, the enemy who held it gains 3 Burning tokens.",
     },
     actions: [
       {
@@ -2199,7 +2261,7 @@ export const styles = [
           {
             diceCost: [6],
             description:
-              "All enemies within range gain a Weakness token.\nAll Traps and Walls within range become Rubble",
+              "All enemies within range gain 1 Weakness token and take 2 damage.\nAll Traps, Pits, and Walls within range become Rubble.",
           },
         ],
       },
@@ -2208,24 +2270,28 @@ export const styles = [
   {
     key: "33",
     parentArchetypeName: "Phantom",
-    name: "Puppet",
+    name: "Puppet's",
     minRange: 1,
-    maxRange: 5,
+    maxRange: 3,
     ability: {
       description:
-        "You may use Speed tokens to move any ally, enemy, or obstacle within range, using the normal Free Movement rules.\nWalls and Traps you move with this Ability become Rubble.\nEdges cannot be moved with this Ability.",
+        "After each space you move using Free Movement, you may Move 1 to one ally or obstacle within range. Obstacles you move with this Ability become Rubble.\nAt the end of your turn, each enemy that moved this turn takes 1 damage, and each ally that moved this turn heals 2.",
     },
     actions: [
       {
         name: "Pull The Strings",
         levels: [
           {
-            diceCost: [3],
-            description: "Choose an enemy or ally you can see. Move them 3 spaces.",
+            diceCost: [2],
+            description: "Target an enemy or ally you can see. Pull them 3.",
           },
           {
-            diceCost: [5],
-            description: "Choose an enemy or ally you can see. Move them 3 spaces.",
+            diceCost: [4],
+            description: "4+: Target an enemy or ally within range. Push them 3.",
+          },
+          {
+            diceCost: [4],
+            description: "7+: Target an enemy or ally within range. Choose one: Push them up to 4; -or- Pull them up to 4.",
           },
         ],
       },
@@ -2239,7 +2305,7 @@ export const styles = [
     maxRange: 3,
     ability: {
       description:
-        "Edges cannot remove your Copies from play. You and your Copies can move over Walls as though they were empty space.\nAfter you use Free Movement on yourself or your Copy, you may move any number of your Copies one space.",
+        "You and your Copies do not take damage from Pits or Traps.\nYou and your Copies treat Walls as if they were Rubble.\nAfter each space of Free Movement you do, any number of your Copies may Move 1.",
     },
     actions: [
       {
@@ -2251,11 +2317,15 @@ export const styles = [
           },
           {
             diceCost: [3],
-            description: "Place a Copy into an empty space within range.",
+            description: "3+: Place a Copy into an empty space within range.",
           },
           {
             diceCost: [5],
-            description: "Place a Copy into an empty space within range.",
+            description: "5+: Place a Copy into an empty space within range.",
+          },
+          {
+            diceCost: [7],
+            description: "7+: Each of your Copies may Move up to 3.",
           },
         ],
       },
@@ -2263,9 +2333,9 @@ export const styles = [
         name: "...Now You Don't",
         levels: [
           {
-            otherCost: ["Destroy 1 Copy"],
+            otherCost: ["Free"],
             description:
-              "...Now You Don't is a Token Action, but the Cost is one of your Copies.\nTeleport into the space of the destroyed Copy.",
+              "Swap spaces with one of your Copies. Usable once per turn.",
           },
         ],
       },
@@ -2276,18 +2346,31 @@ export const styles = [
     parentArchetypeName: "Phantom",
     name: "Vortex",
     minRange: 1,
-    maxRange: 3,
+    maxRange: 4,
     ability: {
       description:
-        "Edges cannot remove you from play. When you stand on an Edge, every other Edge counts as an adjacent space you can move to.",
+        "You do not take damage from Pits.\nWhen you are standing on a Pit, every other Pit counts as an adjacent space you can move to. Your range is still calculated only from the space you are currently standing in.",
     },
     actions: [
+      {
+        name: "Wormhole",
+        levels: [
+          {
+            diceCost: [1],
+            description: "Place a Pit into your own space.",
+          },
+          {
+            diceCost: [4],
+            description: "4+: Place 1 Pit into an empty space you can see.",
+          },
+        ],
+      },
       {
         name: "Black Hole",
         levels: [
           {
-            diceCost: [4],
-            description: "Place an Edge into an empty space within range.",
+            diceCost: [3],
+            description: "Target 1 empty space within range. Place a Pit into that space, then target someone within range and Pull them 2 towards the Pit.",
           },
         ],
       },
