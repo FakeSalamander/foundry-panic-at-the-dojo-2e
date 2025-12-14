@@ -2237,7 +2237,7 @@ export const styles = [
         name: "Aura Surge",
         levels: [
           {
-            otherCosst: ["4+ -or- 1 Poltergeist Token:"],
+            otherCost: ["4+ -or- 1 Poltergeist Token:"],
             description: "Choose one: an ally within range gains Shield 3; -or- Remove up to 4 points of Shield from 1 enemy within range. If this breaks their Shield, deal 2 damage to them.",
           },
         ],
@@ -2379,30 +2379,33 @@ export const styles = [
   {
     key: "36",
     parentArchetypeName: "Punk",
-    name: "Bleeding",
+    name: "Brawling",
     minRange: 1,
     maxRange: 1,
     ability: {
       description:
-        "You don't get Taken Out at zero HP. You can continue to fight as long as you remain in play. Your side still loses if everyone in play is at zero HP at the same time.",
+        "At the end of each turn you took damage, you gain Shield 2.\nAfter your Shield absorbs, you gain 1 Power token.",
     },
     actions: [
       {
-        name: "Lash Out",
+        name: "Tough It Out",
         levels: [
           {
-            otherCost: ["2 HP"],
-            description:
-              "Lash Out is a Token Action that spends your HP.\nYou can't spend HP you do not have.\nPush an adjacent enemy two spaces.",
+            diceCost: [3],
+            description: "Pay 1 HP, then gain a 3 point Shield.",
+          },
+          {
+            diceCost: [9],
+            description: "9+: You instead pay 2 HP and instead gain a 7-point Shield.",
           },
         ],
       },
       {
-        name: "I'm Still Here",
+        name: "Jab",
         levels: [
           {
-            diceCost: [12],
-            description: "Deal 7 damage to an enemy within range.\nThen, push that enemy 7 spaces.",
+            otherCost: ["Reduce your Shield's Value by 2"],
+            description: "You cannot use Jab unless you have a Shield with value 2+. Push 1 and deal 1 damage to an adjacent enemy. Usable once per turn.",
           },
         ],
       },
@@ -2411,39 +2414,12 @@ export const styles = [
   {
     key: "37",
     parentArchetypeName: "Punk",
-    name: "Brawling",
-    minRange: 1,
-    maxRange: 1,
-    ability: {
-      description:
-        "After your Shield breaks, you gain 1 Power token.\nAfter you deal damage, if you didn't spend a Power token on that hit, you gain 1 Power token.",
-    },
-    actions: [
-      {
-        name: "Tough It Out",
-        levels: [
-          {
-            tokenCost: [
-              {
-                number: 2,
-                tokenType: Token.Power,
-              },
-            ],
-            description: "You gain a 2 point Shield.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: "38",
-    parentArchetypeName: "Punk",
     name: "Flashy",
     minRange: 1,
     maxRange: 1,
     ability: {
       description:
-        "After you roll your Action Dice, you may combine two of your numbers into a single, larger number.",
+        "After you roll your Action Dice, you may combine two of your numbers into a single, larger number. Then, you may split one of your numbers in half (one rounded up, the other rounded down). You cannot split a 1.",
     },
     actions: [
       {
@@ -2452,7 +2428,29 @@ export const styles = [
           {
             otherCost: ["X"],
             description:
-              "Choose two of these Basic Actions: Movement, Damage, A Challenger Approaches, Put It Out!, or Throw.\nPerform both of those Actions as if you had spent X on them.\nYou can only use Show Off once per turn.",
+              "Choose X: Move 1; -or- Pull 1 to an enemy you can see; -or- deal 1 damage to an enemy within range; -or- give 1 Burning token to an enemy within range; -or- give 1 Weakness token to an enemy within range; -or- give 1 Fatigue token to an enemy within range; -or- Challenge an enemy within range; -or- Push 1 to an enemy within range; -or- gain 1 Iron token; -or- gain 1 Power token; -or- gain 1 Speed token; -or- heal 1; -or- gain Shield 1. Usable once per turn.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: "38",
+    parentArchetypeName: "Punk",
+    name: "Knockdown",
+    minRange: 1,
+    maxRange: 1,
+    ability: {
+      description: "After you take damage from an Action, you deal 1 damage to each enemy that dealt damage to you. If that enemy holds your Challenge, you deal 2 damage to them instead.",
+    },
+    actions: [
+      {
+        name: "Slugfest",
+        levels: [
+          {
+            otherCost: ["Free"],
+            description:
+              "Move 1, then Challenge an enemy within range, then they deal 1 damage to you. Usable once per turn.",
           },
         ],
       },
@@ -2461,20 +2459,45 @@ export const styles = [
   {
     key: "39",
     parentArchetypeName: "Punk",
-    name: "Knockdown",
+    name: "Mad",
     minRange: 1,
-    maxRange: 1,
+    maxRange: 2,
     ability: {
-      description: "After you take damage from an enemy, you deal 1 damage back to them.",
+      description: "At the start of your turn, choose a Weapon: Club, Knife, or Pistol. You have the chosen Weapon's effect until your next turn.\n- Club: After each damage-dealing Action you perform, give each enemy dealt damage by that Action one Fatigue token.\n- Knife: Your Actions and Abilities are Unblockable by Armor and Tokens.\n- Pistol: You have +3 maximum Range.",
     },
     actions: [
       {
-        name: "Take It On The Chin",
+        name: "Weapon Throw",
         levels: [
           {
-            diceCost: [4],
+            diceCost: [2],
             description:
-              "Each enemy within range deals 1 damage to you.\nThen, you deal 3 damage to one of them.",
+              "Deal 1 damage and give 1 Burning Token to an enemy you can see, then Disable your current Weapon until your next turn.",
+          },
+        ],
+      },
+      {
+        name: "Slice & Smash",
+        levels: [
+          {
+            diceCost: [2],
+            description:
+              "Deal 1 damage to  up to 2 enemies within range.",
+          },
+          {
+            diceCost: [5],
+            description:
+              "5+: Deal 2 damage and Push 1 instead.",
+          },
+          {
+            diceCost: [8],
+            description:
+              "8+: Deal 3 damage and Push 2 instead.",
+          },
+          {
+            diceCost: [11],
+            description:
+              "11+: Deal 4 damage and Push 3 instead.",
           },
         ],
       },
@@ -2488,7 +2511,7 @@ export const styles = [
     maxRange: 1,
     ability: {
       description:
-        "After you take damage, you gain 1 Iron token.\nAfter you take damage from an enemy with your Challenge, you may move one space.",
+        "After you take damage, you gain 1 Iron token.\nAfter you take damage from an enemy with your Challenge, you may Move 1. If an enemy discards your Challenge token using an Action or Ability, you gain 2 Iron tokens.",
     },
     actions: [
       {
@@ -2498,15 +2521,23 @@ export const styles = [
             diceCost: [1],
             description: "Challenge an enemy you can see. You gain 1 Iron token.",
           },
+          {
+            diceCost: [6],
+            description: "6+: Challenge another enemy you can see, then gain 2 Iron tokens and heal 2.",
+          },
+          {
+            diceCost: [12],
+            description: "12+: Challenge a third enemy you can see, then give each of those enemies 3 Weakness tokens and Push 2.",
+          },
         ],
       },
       {
         name: "Not Good Enough",
         levels: [
           {
-            otherCost: ["X"],
+            otherCost: ["Your Challenge Token"],
             description:
-              "Give X - 2 Weakness tokens to an enemy with your Challenge.Then, they discard your Challenge.",
+              "This Action costs your CHallenge token held by an enemy within range. You must discard one such token to pay for Not Good Enough. Target the enemy who held the Challenge Token you spent to pay for Not Good Enough. Give them 2 Weakness tokens. Usable once per turn.",
           },
         ],
       },
